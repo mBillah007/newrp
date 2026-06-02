@@ -36,6 +36,8 @@ class Terminal(AuditModel):
         return f"{self.code} - {self.value}"
 
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.core.exceptions import ValidationError
 
 class ManualEntry(AuditModel):  # AuditModel ইনহেরিট করা থাকলো
     first_entry = models.IntegerField(default=0)
@@ -47,31 +49,37 @@ class ManualEntry(AuditModel):  # AuditModel ইনহেরিট করা থ
     def _get_cleaned_vals(self):
         return self.first_entry or 0, self.second_entry or 0, self.default_entry or 0
 
-    # Formula 1: (1st - 2nd) - 1
-    @property
-    def f1_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first - second) - default
-
-    # Formula 2: (1st - 2nd)
-    @property
-    def f2_val(self):
+    # 🔄 ডাইনামিক বেস সাবট্রাকশন লজিক (সবসময় বড়টি থেকে ছোটটি বিয়োগ)
+    def _get_base_difference(self):
         first, second, _ = self._get_cleaned_vals()
+        if second > first:
+            return second - first
         return first - second
 
-    # Formula 3: (1st - 2nd) + 1
+    # Formula 1: (বড়টি - ছোটটি) - Constant
+    @property
+    def f1_val(self):
+        _, _, default = self._get_cleaned_vals()
+        return self._get_base_difference() - default
+
+    # Formula 2: (বড়টি - ছোটটি)
+    @property
+    def f2_val(self):
+        return self._get_base_difference()
+
+    # Formula 3: (বড়টি - ছোটটি) + Constant
     @property
     def f3_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first - second) + default
+        _, _, default = self._get_cleaned_vals()
+        return self._get_base_difference() + default
 
-    # Formula 4: (1st + 2nd) - 1
+    # Formula 4: (1st + 2nd) - Constant
     @property
     def f4_val(self):
         first, second, default = self._get_cleaned_vals()
         return (first + second) - default
 
-    # Formula 5: (1st + 2nd) + 1
+    # Formula 5: (1st + 2nd) + Constant
     @property
     def f5_val(self):
         first, second, default = self._get_cleaned_vals()
@@ -92,8 +100,7 @@ class ManualEntry(AuditModel):  # AuditModel ইনহেরিট করা থ
                 str(self.f5_val).strip()
             ]
 
-            # টার্মিনাল অবজেক্টের 'code' ফিল্ডের মান নেওয়া হলো (বা আপনার মডেলে যে ফিল্ডটি আছে, যেমন: name বা terminal_id)
-            # যদি টার্মিনাল মডেলে কোড ফিল্ডের নাম 'code' না হয়ে অন্য কিছু হয়, তবে self.total_terminal.code পরিবর্তন করুন
+            # টার্মিনাল কোড ভ্যালু এক্সট্রাক্ট করা হচ্ছে
             terminal_code = str(self.total_terminal.code).strip() if hasattr(self.total_terminal, 'code') else str(self.total_terminal).strip()
 
             # আসল চেক: টার্মিনাল কোডটি কি আমাদের ৫টি ফর্মুলার যেকোনো একটির সাথে মিলে?
@@ -104,50 +111,9 @@ class ManualEntry(AuditModel):  # AuditModel ইনহেরিট করা থ
                 })
 
     def save(self, *args, **kwargs):
-        # সেভ করার আগে ফুল ক্লিন মেথড কল করা নিশ্চিত করা হলো
+        # সেভ করার আগে ফুল ক্লিন মেথដ কল করা নিশ্চিত করা হলো
         self.full_clean()
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"Entry #{self.id} - F1:{self.f1_val} | F2:{self.f2_val} | F3:{self.f3_val} | F4:{self.f4_val} | F5:{self.f5_val}"
-    first_entry = models.IntegerField(default=0)
-    second_entry = models.IntegerField(default=0)
-    default_entry = models.IntegerField(default=1)
-    total_terminal = models.ForeignKey(Terminal, on_delete=models.SET_NULL, null=True, blank=True)
-
-    # Helper method to sanitize inputs
-    def _get_cleaned_vals(self):
-        return self.first_entry or 0, self.second_entry or 0, self.default_entry or 0
-
-    # Formula 1: (1st - 2nd) - 1
-    @property
-    def f1_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first - second) - default
-
-    # Formula 2: (1st - 2nd)
-    @property
-    def f2_val(self):
-        first, second, _ = self._get_cleaned_vals()
-        return first - second
-
-    # Formula 3: (1st - 2nd) + 1
-    @property
-    def f3_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first - second) + default
-
-    # Formula 4: (1st + 2nd) - 1
-    @property
-    def f4_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first + second) - default
-
-    # Formula 5: (1st + 2nd) + 1
-    @property
-    def f5_val(self):
-        first, second, default = self._get_cleaned_vals()
-        return (first + second) + default
 
     def __str__(self):
         return f"Entry #{self.id} - F1:{self.f1_val} | F2:{self.f2_val} | F3:{self.f3_val} | F4:{self.f4_val} | F5:{self.f5_val}"

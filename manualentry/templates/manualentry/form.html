@@ -87,7 +87,7 @@
                                 <tbody class="font-monospace text-center">
                                     <tr id="row_f1" class="formula-row" data-formula="f1">
                                         <td class="fw-bold text-muted">01</td>
-                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number) - 1</td>
+                                        <td class="text-start text-dark fw-medium">(Highest - Lowest Entry) - Constant</td>
                                         <td class="fs-6 fw-bold text-primary formula-val" id="val_f1">0</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
@@ -98,7 +98,7 @@
                                     </tr>
                                     <tr id="row_f2" class="formula-row" data-formula="f2">
                                         <td class="fw-bold text-muted">02</td>
-                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number)</td>
+                                        <td class="text-start text-dark fw-medium">(Highest - Lowest Entry)</td>
                                         <td class="fs-6 fw-bold text-primary formula-val" id="val_f2">0</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
@@ -109,7 +109,7 @@
                                     </tr>
                                     <tr id="row_f3" class="formula-row" data-formula="f3">
                                         <td class="fw-bold text-muted">03</td>
-                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number) + 1</td>
+                                        <td class="text-start text-dark fw-medium">(Highest - Lowest Entry) + Constant</td>
                                         <td class="fs-6 fw-bold text-primary formula-val" id="val_f3">0</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
@@ -120,7 +120,7 @@
                                     </tr>
                                     <tr id="row_f4" class="formula-row" data-formula="f4">
                                         <td class="fw-bold text-muted">04</td>
-                                        <td class="text-start text-dark fw-medium">(1st Number + 2nd Number) - 1</td>
+                                        <td class="text-start text-dark fw-medium">(1st Entry + 2nd Entry) - Constant</td>
                                         <td class="fs-6 fw-bold text-primary formula-val" id="val_f4">0</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
@@ -131,7 +131,7 @@
                                     </tr>
                                     <tr id="row_f5" class="formula-row" data-formula="f5">
                                         <td class="fw-bold text-muted">05</td>
-                                        <td class="text-start text-dark fw-medium">(1st Number + 2nd Number) + 1</td>
+                                        <td class="text-start text-dark fw-medium">(1st Entry + 2nd Entry) + Constant</td>
                                         <td class="fs-6 fw-bold text-primary formula-val" id="val_f5">0</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
@@ -167,7 +167,7 @@
         let masterOptions = $('#id_total_terminal').html();
         $('.terminal-select').html(masterOptions);
 
-        // যদি এডিট মোড হয়, তবে আগের সিলেক্টেড ভ্যালুটি ডিফল্ট হিসেবে প্রথম রো-তে সেট করবে
+        // যদি এডিট মোড হয়, তবে আগের সিলেক্টেড ভ্যালুটি ডিফল্ট হিসেবে সেট করবে
         let initialMasterVal = $('#id_total_terminal').val();
         if (initialMasterVal) {
             $('.terminal-select').val(initialMasterVal);
@@ -179,10 +179,13 @@
             let second = parseInt($('#id_second_entry').val()) || 0;
             let defaultVal = parseInt($('#id_default_entry').val()) || 0;
 
-            // ফর্মুলা ভ্যালু প্রসেস
-            let f1 = (first - second) - defaultVal;
-            let f2 = (first - second);
-            let f3 = (first - second) + defaultVal;
+            // 🔄 ফ্রন্টএন্ড সাবট্রাকশন লজিক (সবসময় বড়টি থেকে ছোটটি বিয়োগ)
+            let baseDiff = (second > first) ? (second - first) : (first - second);
+
+            // নতুন ফর্মুলা ভ্যালু ম্যাট্রিক্স প্রসেস
+            let f1 = baseDiff - defaultVal;
+            let f2 = baseDiff;
+            let f3 = baseDiff + defaultVal;
             let f4 = (first + second) - defaultVal;
             let f5 = (first + second) + defaultVal;
 
@@ -217,7 +220,7 @@
                         }
                     });
                     if (!autoMatchedFound) {
-                        selectElement.val(""); // মিল না পাওয়া গেলে ড্রপডাউন ফাঁকা থাকবে
+                        selectElement.val(""); // মিল না পাওয়া গেলে ড্রপডাউন ফাঁকা থাকবে
                     }
                 }
 
@@ -259,7 +262,7 @@
             executeMatrixCalculation(true, activeRowFormula);
         });
 
-        // ফার্স্ট ইনিশিয়াল লোড
+        // ফার্স্ট ইনিশিয়াল লোড
         executeMatrixCalculation(false);
     });
 </script>
