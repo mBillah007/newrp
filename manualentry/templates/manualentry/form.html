@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-xl-10">
         <div class="mb-3">
             <a href="{% url 'manualentry:entry_list' %}" class="text-decoration-none text-secondary small d-inline-flex align-items-center gap-1">
                 <i class="bi bi-arrow-left"></i> Abort & Return to Logs
@@ -18,7 +18,7 @@
                     <h5 class="text-white fw-bold mb-0">
                         {% if form.instance.pk %}Modify Active Dataset Registry{% else %}Initialize New Parameter Node{% endif %}
                     </h5>
-                    <p class="text-muted small mb-0 font-monospace" style="font-size: 11px;">REAL-TIME CORE CODE-ALIGNMENT ENGINE</p>
+                    <p class="text-muted small mb-0 font-monospace" style="font-size: 11px;">REAL-TIME MULTI-FORMULA MATRIX ENGINE</p>
                 </div>
             </div>
             
@@ -37,52 +37,111 @@
                 </div>
                 {% endif %}
 
-                <div class="row g-4">
-                    <div class="col-md-6">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
                         <label class="form-label text-dark fw-semibold small mb-1">First Entry Pool <span class="text-danger">*</span></label>
-                        <div class="input-group">
+                        <div class="input-group shadow-sm rounded-3">
                             <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-hash"></i></span>
                             {{ form.first_entry }}
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label text-dark fw-semibold small mb-1">Second Entry Pool <span class="text-danger">*</span></label>
-                        <div class="input-group">
+                        <div class="input-group shadow-sm rounded-3">
                             <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-hash"></i></span>
                             {{ form.second_entry }}
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label text-dark fw-semibold small mb-1">Default Entry Constant</label>
-                        <div class="input-group">
+                        <div class="input-group shadow-sm rounded-3">
                             <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-lock-fill text-warning"></i></span>
                             {{ form.default_entry }}
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label text-dark fw-semibold small mb-1">Link Target Terminal <span class="text-danger">*</span></label>
-                        {{ form.total_terminal }}
-                    </div>
+                <div class="d-none">
+                    {{ form.total_terminal }}
+                </div>
 
-                    <div class="col-12">
-                        <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
-                            <div>
-                                <span class="d-block text-muted small font-monospace" style="font-size: 10px; letter-spacing: 0.5px;">LIVE CODE MATCH ENGINE</span>
-                                <h6 class="text-dark fw-bold mb-0 mt-1">Calculated Net vs Selected Terminal Code</h6>
-                            </div>
-                            <div class="d-flex align-items-center gap-3 w-100 w-sm-auto justify-content-between justify-content-sm-end">
-                                <div class="text-end">
-                                    <span class="d-block text-muted small font-monospace" style="font-size: 9px;">NET OUTPUT</span>
-                                    <span class="fs-4 font-monospace fw-bold text-primary" id="liveCalculatedNet">0</span>
-                                </div>
-                                <div class="border-start ps-3 text-end" style="min-width: 100px;">
-                                    <span class="d-block text-muted small font-monospace" style="font-size: 9px;">STATUS</span>
-                                    <span id="matchingStatusBadge" class="badge bg-secondary mt-1 py-2 px-3 fs-6 font-monospace">No Data</span>
-                                </div>
-                            </div>
+                <div class="col-12 mb-4">
+                    <div class="p-3 bg-light rounded-3 border">
+                        <div class="mb-3">
+                            <span class="d-block text-muted small font-monospace" style="font-size: 10px; letter-spacing: 0.5px;">LIVE MULTI-MATRIX MATCH ENGINE</span>
+                            <h6 class="text-dark fw-bold mb-0 mt-1">Formula Values Matrix Verification</h6>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered bg-white align-middle mb-0 shadow-sm" style="font-size: 13px;">
+                                <thead class="table-dark font-monospace text-center">
+                                    <tr>
+                                        <th style="width: 8%;">ID</th>
+                                        <th style="width: 37%;" class="text-start">Formula Structure</th>
+                                        <th style="width: 15%;">Calculated Net</th>
+                                        <th style="width: 40%;">Link Target Terminal & Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="font-monospace text-center">
+                                    <tr id="row_f1" class="formula-row" data-formula="f1">
+                                        <td class="fw-bold text-muted">01</td>
+                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number) - 1</td>
+                                        <td class="fs-6 fw-bold text-primary formula-val" id="val_f1">0</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select form-select-sm terminal-select" style="max-width: 200px;"></select>
+                                                <span class="badge bg-secondary status-badge py-2 px-2 flex-grow-1">No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_f2" class="formula-row" data-formula="f2">
+                                        <td class="fw-bold text-muted">02</td>
+                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number)</td>
+                                        <td class="fs-6 fw-bold text-primary formula-val" id="val_f2">0</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select form-select-sm terminal-select" style="max-width: 200px;"></select>
+                                                <span class="badge bg-secondary status-badge py-2 px-2 flex-grow-1">No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_f3" class="formula-row" data-formula="f3">
+                                        <td class="fw-bold text-muted">03</td>
+                                        <td class="text-start text-dark fw-medium">(1st Number - 2nd Number) + 1</td>
+                                        <td class="fs-6 fw-bold text-primary formula-val" id="val_f3">0</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select form-select-sm terminal-select" style="max-width: 200px;"></select>
+                                                <span class="badge bg-secondary status-badge py-2 px-2 flex-grow-1">No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_f4" class="formula-row" data-formula="f4">
+                                        <td class="fw-bold text-muted">04</td>
+                                        <td class="text-start text-dark fw-medium">(1st Number + 2nd Number) - 1</td>
+                                        <td class="fs-6 fw-bold text-primary formula-val" id="val_f4">0</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select form-select-sm terminal-select" style="max-width: 200px;"></select>
+                                                <span class="badge bg-secondary status-badge py-2 px-2 flex-grow-1">No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_f5" class="formula-row" data-formula="f5">
+                                        <td class="fw-bold text-muted">05</td>
+                                        <td class="text-start text-dark fw-medium">(1st Number + 2nd Number) + 1</td>
+                                        <td class="fs-6 fw-bold text-primary formula-val" id="val_f5">0</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select form-select-sm terminal-select" style="max-width: 200px;"></select>
+                                                <span class="badge bg-secondary status-badge py-2 px-2 flex-grow-1">No Data</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -101,81 +160,107 @@
 </div>
 
 {% endblock %}
-
 {% block extra_js %}
 <script>
     $(document).ready(function() {
-        function executeLiveCalculation(isManualTerminalChange = false) {
-            let first = parseInt($('#id_first_entry').val()) || 0;
-            let second = parseInt($('#id_second_entry').val()) || 0;
-            let defaultVal = parseInt($('#id_default_entry').val()) || 1;
+        // ১. জ্যাঙ্গোর মূল ড্রপডাউন থেকে অপশনগুলো টেবিলে ক্লোন করার ইঞ্জিন
+        let masterOptions = $('#id_total_terminal').html();
+        $('.terminal-select').html(masterOptions);
 
-            // ১. নেট আউটপুট জেনারেট (স্ট্রিং ফরম্যাটে রাখা হলো কোডের সাথে মেলানোর সুবিধার জন্য)
-            let netOutput = 0;
-            if (second > first) {
-                netOutput = second - first - defaultVal;
-            } else {
-                netOutput = first - second - defaultVal;
-            }
-            let netOutputStr = String(netOutput).trim();
-            $('#liveCalculatedNet').text(netOutput);
-
-            // ২. 🤖 অটো-সিলেকশন ইঞ্জিন (কোড বেজড)
-            if (!isManualTerminalChange) {
-                let matchedCodeFound = false;
-
-                $("#id_total_terminal option").each(function() {
-                    let optionText = $(this).text();
-                    if (optionText && optionText.indexOf(' - ') !== -1) {
-                        let textParts = optionText.split(' - ');
-                        // 'TRM-01 - 5' থেকে প্রথম অংশ 'TRM-01' বা '4 - 25' থেকে '4' আলাদা করা
-                        let optionCode = textParts[0].trim(); 
-
-                        // 🎯 এখানে চেকটি কোড এর সাথে মিলানো হচ্ছে
-                        if (optionCode === netOutputStr) {
-                            $('#id_total_terminal').val($(this).val());
-                            matchedCodeFound = true;
-                            return false; // লুপ ব্রেক
-                        }
-                    }
-                });
-
-                if (!matchedCodeFound) {
-                    $('#id_total_terminal').val(""); // কোড না মিললে ড্রপডাউন আন-সিলেক্ট থাকবে
-                }
-            }
-
-            // ৩. লাইভ ম্যাচিং ব্যাজ স্ট্যাটাস আপডেট
-            let selectedText = $("#id_total_terminal option:selected").text();
-            let currentSelectedCode = null;
-
-            if (selectedText && selectedText.indexOf(' - ') !== -1) {
-                let textParts = selectedText.split(' - ');
-                currentSelectedCode = textParts[0].trim();
-            }
-
-            let statusBadge = $('#matchingStatusBadge');
-            
-            if (!currentSelectedCode) {
-                statusBadge.text('Select Node').removeClass('bg-success bg-danger').addClass('bg-secondary');
-            } else if (netOutputStr === currentSelectedCode) {
-                statusBadge.text('✓ Code Matched').removeClass('bg-secondary bg-danger').addClass('bg-success');
-            } else {
-                statusBadge.text('🗙 Code Mismatch').removeClass('bg-secondary bg-success').addClass('bg-danger');
-            }
+        // যদি এডিট মোড হয়, তবে আগের সিলেক্টেড ভ্যালুটি ডিফল্ট হিসেবে প্রথম রো-তে সেট করবে
+        let initialMasterVal = $('#id_total_terminal').val();
+        if (initialMasterVal) {
+            $('.terminal-select').val(initialMasterVal);
         }
 
-        // রিয়েল-টাইম ইভেন্ট লিসেনার ট্রিগার
-        $('#id_first_entry, #id_second_entry').on('input change', function() {
-            executeLiveCalculation(false); // ইনপুট দিলে অটো-সিলেকশন রান হবে
+        function executeMatrixCalculation(triggeredByManualChange = false, activeRowContext = null) {
+            // ইনপুট ভ্যালু রিকোয়েস্ট ও ফিল্টারিং
+            let first = parseInt($('#id_first_entry').val()) || 0;
+            let second = parseInt($('#id_second_entry').val()) || 0;
+            let defaultVal = parseInt($('#id_default_entry').val()) || 0;
+
+            // ফর্মুলা ভ্যালু প্রসেস
+            let f1 = (first - second) - defaultVal;
+            let f2 = (first - second);
+            let f3 = (first - second) + defaultVal;
+            let f4 = (first + second) - defaultVal;
+            let f5 = (first + second) + defaultVal;
+
+            $('#val_f1').text(f1);
+            $('#val_f2').text(f2);
+            $('#val_f3').text(f3);
+            $('#val_f4').text(f4);
+            $('#val_f5').text(f5);
+
+            let formulaMap = { 'f1': f1, 'f2': f2, 'f3': f3, 'f4': f4, 'f5': f5 };
+
+            // ২. প্রতিটি রোর জন্য আলাদা ম্যাচিং ইঞ্জিন এবং অটো-সিলেক্টর লজিক
+            $('.formula-row').each(function() {
+                let row = $(this);
+                let formulaKey = row.data('formula');
+                let netCalculatedVal = String(formulaMap[formulaKey]).trim();
+                let selectElement = row.find('.terminal-select');
+                let badgeElement = row.find('.status-badge');
+
+                // ইউজার যদি ইনপুট ফিল্ডে টাইপ করেন, তবে অটো-ম্যাচিং ইঞ্জিন রান হবে
+                if (!triggeredByManualChange) {
+                    let autoMatchedFound = false;
+                    selectElement.find('option').each(function() {
+                        let optionText = $(this).text();
+                        if (optionText && optionText.indexOf(' - ') !== -1) {
+                            let optionCode = optionText.split(' - ')[0].trim();
+                            if (optionCode === netCalculatedVal) {
+                                selectElement.val($(this).val());
+                                autoMatchedFound = true;
+                                return false; // ব্রেক লুপ
+                            }
+                        }
+                    });
+                    if (!autoMatchedFound) {
+                        selectElement.val(""); // মিল না পাওয়া গেলে ড্রপডাউন ফাঁকা থাকবে
+                    }
+                }
+
+                // ৩. লাইভ স্ট্যাটাস ব্যাজ ও রো কালার আপডেট
+                let selectedOptionText = selectElement.find('option:selected').text();
+                let currentSelectedCode = null;
+
+                if (selectedOptionText && selectedOptionText.indexOf(' - ') !== -1) {
+                    currentSelectedCode = selectedOptionText.split(' - ')[0].trim();
+                }
+
+                if (!currentSelectedCode) {
+                    badgeElement.text('Select Node').removeClass('bg-success bg-danger').addClass('bg-secondary');
+                    row.removeClass('table-success table-danger');
+                } else if (netCalculatedVal === currentSelectedCode) {
+                    badgeElement.text('✓ Code Matched').removeClass('bg-secondary bg-danger').addClass('bg-success');
+                    row.addClass('table-success').removeClass('table-danger');
+                    
+                    // যে রোটি পারফেক্টলি ম্যাচ করবে, সেটির ভ্যালুই জ্যাঙ্গোর আসল হিডেন ইনপুটে সিঙ্ক হবে
+                    if (!triggeredByManualChange || activeRowContext === formulaKey) {
+                        $('#id_total_terminal').val(selectElement.val());
+                    }
+                } else {
+                    badgeElement.text('🗙 Mismatch').removeClass('bg-secondary bg-success').addClass('bg-danger');
+                    row.removeClass('table-success').addClass('table-danger');
+                }
+            });
+        }
+
+        // ইভেন্ট লিসেনার ট্রিপল ট্র্যাকিং
+        $('#id_first_entry, #id_second_entry, #id_default_entry').on('input change', function() {
+            executeMatrixCalculation(false); // টাইপ করার সাথে সাথে অটো-ম্যাচিং ডাইনামিকালি ট্র্যাকিং হবে
         });
 
-        $('#id_total_terminal').on('change', function() {
-            executeLiveCalculation(true); // ইউজার ম্যানুয়ালি ড্রপডাউন সিলেক্ট করলে অটো-সিলেকশন লক হবে
+        $('.terminal-select').on('change', function() {
+            let activeRowFormula = $(this).closest('.formula-row').data('formula');
+            // ইউজার ম্যানুয়ালি কোনো লাইনের ড্রপডাউন চেঞ্জ করলে জ্যাঙ্গো মেইন ইনপুটে সেই আইডি পুশ হবে
+            $('#id_total_terminal').val($(this).val());
+            executeMatrixCalculation(true, activeRowFormula);
         });
 
-        // ডম (DOM) রেডি হলে ফার্স্ট রান
-        executeLiveCalculation(false);
+        // ফার্স্ট ইনিশিয়াল লোড
+        executeMatrixCalculation(false);
     });
 </script>
 {% endblock %}

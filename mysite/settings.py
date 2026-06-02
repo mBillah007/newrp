@@ -1,5 +1,6 @@
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,14 +76,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
+# আপনার বর্তমান কোডটি এভাবে পরিবর্তন করুন
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # যদি রেন্ডারে DATABASE_URL এনভায়রনমেন্ট ভেরিয়েবল থাকে তবে সেটা ব্যবহার করবে
+        # না থাকলে লোকাল db.sqlite3 ব্যবহার করবে
+        default=os.environ.get('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
